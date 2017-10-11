@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,14 +23,18 @@ public class MainActivity extends AppCompatActivity {
     private ListView lv;
     private static String SERVICE_URL = "https://restcountries.eu/rest/v2/all";
     private ArrayList<Country> countriesList;
+    protected ArrayList<String> continentsList;
+    private int screenNdx = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        screenNdx = 0;
 
         countriesList = new ArrayList<Country>();
+        continentsList = new ArrayList<String>();
         lv = (ListView) findViewById(R.id.listContinents);
         new GetContacts().execute();
     }
@@ -70,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject c = countryJsonArray.getJSONObject(i);
 
                         String name = c.getString("name");
+                        String region = c.getString("region");
                         /*
                         String firstName = c.getString("FirstName");
                         String lastName = c.getString("LastName");
@@ -84,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // adding each child node to HashMap key => value
                         ctry.setName(name);
+                        ctry.setRegion(region);
                         /*
                         toon.setFirstName(firstName);
                         toon.setLastName(lastName);
@@ -95,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
                         // adding contact to contact list
                         countriesList.add(ctry);
+                        if (!continentsList.contains(ctry.getRegion())) {
+                            continentsList.add(ctry.getRegion());
+                        }
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -134,11 +145,14 @@ public class MainActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            CountryAdapter adapter = new CountryAdapter(MainActivity.this, countriesList);
-
-            // Attach the adapter to a ListView
-            lv.setAdapter(adapter);
+            if (screenNdx == 1) {
+                CountryAdapter adapter = new CountryAdapter(MainActivity.this, countriesList);
+                // Attach the adapter to a ListView
+                lv.setAdapter(adapter);
+            } else if (screenNdx == 0) {
+                final ArrayAdapter<String> arr = new ArrayAdapter<String>(MainActivity.this, R.layout.list_row_layout, R.id.firstName, continentsList);
+                lv.setAdapter(arr);
+                }
+            }
         }
     }
-
-}
