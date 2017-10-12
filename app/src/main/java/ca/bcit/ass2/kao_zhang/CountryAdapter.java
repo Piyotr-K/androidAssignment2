@@ -32,11 +32,21 @@ public class CountryAdapter extends ArrayAdapter<Country> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row_layout, parent, false);
         }
         // Lookup view for data population
-        TextView tvFirstName = (TextView) convertView.findViewById(R.id.display_text);
+        TextView tvCountryName = (TextView) convertView.findViewById(R.id.country_name);
+        TextView tvCountryCapital = (TextView) convertView.findViewById(R.id.country_capital);
+        TextView tvCountryRegion = (TextView) convertView.findViewById(R.id.country_region);
+        TextView tvCountryPopulation = (TextView) convertView.findViewById(R.id.country_population);
+        TextView tvCountryArea = (TextView) convertView.findViewById(R.id.country_area);
+        TextView tvCountryBorders = (TextView) convertView.findViewById(R.id.country_borders);
         // Populate the data into the template view using the data object
-        tvFirstName.setText(ctry.getName());
+        tvCountryName.setText(ctry.getName());
+        tvCountryCapital.setText(ctry.getCapital());
+        tvCountryRegion.setText(ctry.getRegion());
+        tvCountryPopulation.setText("Population: " + ctry.getPopulation());
+        tvCountryArea.setText("Area: " + ctry.getArea());
+        tvCountryBorders.setText(ctry.getBorders().toString());
 
-        ImageView imgOnePhoto = (ImageView) convertView.findViewById(R.id.thumbImage);
+        ImageView imgOnePhoto = (ImageView) convertView.findViewById(R.id.country_flag);
         //DownloadImageTask dit = new DownloadImageTask(_context, imgOnePhoto);
         //dit.execute(toon.getPicture());
         if (ctry.getFlag() != null) {
