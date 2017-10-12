@@ -1,11 +1,15 @@
 package ca.bcit.ass2.kao_zhang;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -17,11 +21,13 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = MainActivity.class.getSimpleName();
+    private Resources res = getResources();
     private ProgressDialog pDialog;
     private ListView lv;
+    private Intent countryInt;
     private static String SERVICE_URL = "https://restcountries.eu/rest/v2/all";
+    private String[] regions = res.getStringArray(R.array.regions);
     private ArrayList<Country> countriesList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,41 @@ public class MainActivity extends AppCompatActivity {
         countriesList = new ArrayList<Country>();
         lv = (ListView) findViewById(R.id.listContinents);
         new GetContacts().execute();
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> adapterView, View v, int i, long l) {
+                switch (i) {
+                    case 0:
+                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
+                        countryInt.putExtra("selectedRegion", regions[i]);
+                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
+                        break;
+                    case 1:
+                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
+                        countryInt.putExtra("selectedRegion", regions[i]);
+                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
+                        break;
+                    case 2:
+                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
+                        countryInt.putExtra("selectedRegion", regions[i]);
+                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
+                        break;
+                    case 3:
+                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
+                        countryInt.putExtra("selectedRegion", regions[i]);
+                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
+                        break;
+                    case 4:
+                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
+                        countryInt.putExtra("selectedRegion", regions[i]);
+                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
+                        break;
+                    default:
+                        Log.v(TAG, "Error");
+                        break;
+                }
+            }
+        });
     }
 
     /**
@@ -70,28 +111,14 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject c = countryJsonArray.getJSONObject(i);
 
                         String name = c.getString("name");
-                        /*
-                        String firstName = c.getString("FirstName");
-                        String lastName = c.getString("LastName");
-                        String occupation = c.getString("Occupation");
-                        String gender = c.getString("Gender");
-                        String created = c.getString("Created");
-                        String picture = c.getString("Picture");
-                        */
+                        String region = c.getString("region");
 
                         // tmp hash map for single contact
                         Country ctry = new Country();
 
                         // adding each child node to HashMap key => value
                         ctry.setName(name);
-                        /*
-                        toon.setFirstName(firstName);
-                        toon.setLastName(lastName);
-                        toon.setOccupation(occupation);
-                        toon.setGender(gender);
-                        toon.setCreated(created);
-                        toon.setPicture(picture);
-                        */
+                        ctry.setRegion(region);
 
                         // adding contact to contact list
                         countriesList.add(ctry);

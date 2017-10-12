@@ -32,11 +32,9 @@ public class CountryAdapter extends ArrayAdapter<Country> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row_layout, parent, false);
         }
         // Lookup view for data population
-        TextView tvFirstName = (TextView) convertView.findViewById(R.id.firstName);
-        TextView tvLastName = (TextView) convertView.findViewById(R.id.lastName);
+        TextView tvFirstName = (TextView) convertView.findViewById(R.id.display_text);
         // Populate the data into the template view using the data object
         tvFirstName.setText(ctry.getName());
-        tvLastName.setText(ctry.getRegion());
 
         ImageView imgOnePhoto = (ImageView) convertView.findViewById(R.id.thumbImage);
         //DownloadImageTask dit = new DownloadImageTask(_context, imgOnePhoto);

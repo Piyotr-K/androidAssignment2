@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Kao_Zhang</string>
+    <string-array name="regions">
+        <item>Africa</item>
+        <item>Americas</item>
+        <item>Asia</item>
+        <item>Europe</item>
+        <item>Oceania</item>
+    </string-array>
 </resources>
