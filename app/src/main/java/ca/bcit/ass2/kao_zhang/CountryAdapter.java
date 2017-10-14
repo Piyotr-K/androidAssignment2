@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lel on 2017-10-10.
@@ -17,8 +18,11 @@ import java.util.ArrayList;
 
 public class CountryAdapter extends ArrayAdapter<Country> {
     Context _context;
-    public CountryAdapter(Context context, ArrayList<Country> countries) {
+    private int region;
+    private static List<String> regionsList;
+    public CountryAdapter(Context context, ArrayList<Country> countries, int Region) {
         super(context, 0, countries);
+        this.region = Region;
         _context = context;
     }
 
@@ -32,29 +36,33 @@ public class CountryAdapter extends ArrayAdapter<Country> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row_layout, parent, false);
         }
         // Lookup view for data population
-        TextView tvCountryName = (TextView) convertView.findViewById(R.id.country_name);
-        TextView tvCountryCapital = (TextView) convertView.findViewById(R.id.country_capital);
-        TextView tvCountryRegion = (TextView) convertView.findViewById(R.id.country_region);
-        TextView tvCountryPopulation = (TextView) convertView.findViewById(R.id.country_population);
-        TextView tvCountryArea = (TextView) convertView.findViewById(R.id.country_area);
-        TextView tvCountryBorders = (TextView) convertView.findViewById(R.id.country_borders);
-        // Populate the data into the template view using the data object
-        tvCountryName.setText(ctry.getName());
-        tvCountryCapital.setText(ctry.getCapital());
-        tvCountryRegion.setText(ctry.getRegion());
-        tvCountryPopulation.setText("Population: " + ctry.getPopulation());
-        tvCountryArea.setText("Area: " + ctry.getArea());
-        tvCountryBorders.setText(ctry.getBorders().toString());
-
-        ImageView imgOnePhoto = (ImageView) convertView.findViewById(R.id.country_flag);
-        //DownloadImageTask dit = new DownloadImageTask(_context, imgOnePhoto);
-        //dit.execute(toon.getPicture());
-        if (ctry.getFlag() != null) {
-            new ImageDownloaderTask(imgOnePhoto).execute(ctry.getFlag());
+        TextView tvCountryName = (TextView) convertView.findViewById(R.id.display_text);
+        if (region == 1) {
+            if (findItBOyz(regionsList, ctry.getRegion())) {
+                //ignore
+            } else {
+                regionsList.add(ctry.getRegion());
+                tvCountryName.setText(ctry.getRegion());
+            }
+        } else {
+            tvCountryName.setText(ctry.getName());
         }
 
         // Return the completed view to render on screen
         return convertView;
     }
+
+    private boolean findItBOyz(List<String> a, String key) {
+        if (a == null) {
+            return false;
+        }
+        for (int i = 0; i < a.size(); i++) {
+            if (a.get(i).equalsIgnoreCase(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 

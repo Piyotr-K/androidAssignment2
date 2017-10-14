@@ -17,17 +17,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = MainActivity.class.getSimpleName();
-    private Resources res = getResources();
     private ProgressDialog pDialog;
     private ListView lv;
     private Intent countryInt;
     private static String SERVICE_URL = "https://restcountries.eu/rest/v2/all";
-    private String[] regions = res.getStringArray(R.array.regions);
-    private ArrayList<Country> countriesList;
+    public static ArrayList<Country> countriesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,39 +36,10 @@ public class MainActivity extends AppCompatActivity {
         countriesList = new ArrayList<Country>();
         lv = (ListView) findViewById(R.id.listContinents);
         new GetContacts().execute();
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View v, int i, long l) {
-                switch (i) {
-                    case 0:
-                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
-                        countryInt.putExtra("selectedRegion", regions[i]);
-                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
-                        break;
-                    case 1:
-                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
-                        countryInt.putExtra("selectedRegion", regions[i]);
-                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
-                        break;
-                    case 2:
-                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
-                        countryInt.putExtra("selectedRegion", regions[i]);
-                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
-                        break;
-                    case 3:
-                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
-                        countryInt.putExtra("selectedRegion", regions[i]);
-                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
-                        break;
-                    case 4:
-                        countryInt = new Intent(MainActivity.this, CountryActivity.class);
-                        countryInt.putExtra("selectedRegion", regions[i]);
-                        countryInt.putParcelableArrayListExtra("list_countries", countriesList);
-                        break;
-                    default:
-                        Log.v(TAG, "Error");
-                        break;
-                }
+                countryInt = new Intent(MainActivity.this, CountryActivity.class);
+                countryInt.putExtra("selectedRegion", adapterView.getItemAtPosition(i).toString());
             }
         });
     }
@@ -112,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
                         String name = c.getString("name");
                         String region = c.getString("region");
+                        String capital = c.getString("capital");
+                        int population = c.getInt("population");
+                        int area = c.getInt("area");
 
                         // tmp hash map for single contact
                         Country ctry = new Country();
@@ -119,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
                         // adding each child node to HashMap key => value
                         ctry.setName(name);
                         ctry.setRegion(region);
+                        ctry.setCapital(capital);
+                        ctry.setPopulation(population);
 
                         // adding contact to contact list
                         countriesList.add(ctry);
@@ -161,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            CountryAdapter adapter = new CountryAdapter(MainActivity.this, countriesList);
+            CountryAdapter adapter = new CountryAdapter(MainActivity.this, countriesList, 1);
 
             // Attach the adapter to a ListView
             lv.setAdapter(adapter);
