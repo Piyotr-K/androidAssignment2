@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Intent countryInt;
     private static String SERVICE_URL = "https://restcountries.eu/rest/v2/all";
     public static ArrayList<Country> countriesList;
+    private ArrayList<Country> continentsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         countriesList = new ArrayList<Country>();
+        continentsList = new ArrayList<Country>();
         lv = (ListView) findViewById(R.id.listContinents);
         new GetContacts().execute();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View v, int i, long l) {
                 countryInt = new Intent(MainActivity.this, CountryActivity.class);
-                countryInt.putExtra("selectedRegion", adapterView.getItemAtPosition(i).toString());
+                countryInt.putExtra("selectedRegion", ((TextView) v.findViewById(R.id.display_text)).getText().toString());
+                startActivity(countryInt);
             }
         });
     }
@@ -78,13 +83,23 @@ public class MainActivity extends AppCompatActivity {
 
                     // looping through All Contacts
                     for (int i = 0; i < countryJsonArray.length(); i++) {
+                        Double area;
                         JSONObject c = countryJsonArray.getJSONObject(i);
-
+                        JSONArray border = c.getJSONArray("borders");
+                        List<String> borderCountries = new ArrayList<String>();
                         String name = c.getString("name");
                         String region = c.getString("region");
                         String capital = c.getString("capital");
                         int population = c.getInt("population");
-                        int area = c.getInt("area");
+                        if (c.isNull("area")) {
+                            area = 0.0;
+                        } else {
+                            area = c.getDouble("area");
+                        }
+                        for (int o = 0; o < border.length(); o++) {
+                            borderCountries.add(border.getString(o));
+                        }
+                        String flagUrl = c.getString("flag");
 
                         // tmp hash map for single contact
                         Country ctry = new Country();
@@ -94,9 +109,19 @@ public class MainActivity extends AppCompatActivity {
                         ctry.setRegion(region);
                         ctry.setCapital(capital);
                         ctry.setPopulation(population);
+                        ctry.setArea(area);
+                        ctry.setBorders(borderCountries);
+                        ctry.setFlag(flagUrl);
 
                         // adding contact to contact list
                         countriesList.add(ctry);
+                        if (continentsList.size() == 0) {
+                            continentsList.add(ctry);
+                        } else {
+                            if (!containsRegion(continentsList, ctry)) {
+                                continentsList.add(ctry);
+                            }
+                        }
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -124,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
             }
-
             return null;
         }
 
@@ -136,10 +160,20 @@ public class MainActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            CountryAdapter adapter = new CountryAdapter(MainActivity.this, countriesList, 1);
+            CountryAdapter adapter = new CountryAdapter(MainActivity.this, continentsList, 1);
 
             // Attach the adapter to a ListView
             lv.setAdapter(adapter);
+        }
+
+        protected boolean containsRegion(ArrayList<Country> List, Country c) {
+            boolean found = false;
+            for (int j = 0; j < continentsList.size(); j++) {
+                if (continentsList.get(j).getRegion().equalsIgnoreCase(c.getRegion())) {
+                    found = true;
+                }
+            }
+            return found;
         }
     }
 

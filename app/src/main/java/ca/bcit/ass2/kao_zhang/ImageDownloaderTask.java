@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.ImageView;
 
 import java.io.InputStream;
@@ -16,11 +17,13 @@ import java.net.URL;
  * Created by Lel on 2017-10-10.
  */
 
-class ImageDownloaderTask extends AsyncTask<String, Void, Bitmap> {
-    private final WeakReference<ImageView> imageViewReference;
+class ImageDownloaderTask //extends AsyncTask<String, Void, Bitmap>
+{
+    /*
+    private final WeakReference<WebView> webViewReference;
 
-    public ImageDownloaderTask(ImageView imageView) {
-        imageViewReference = new WeakReference<ImageView>(imageView);
+    public ImageDownloaderTask(WebView webView) {
+        webViewReference = new WeakReference<WebView>(webView);
     }
 
     @Override
@@ -34,14 +37,14 @@ class ImageDownloaderTask extends AsyncTask<String, Void, Bitmap> {
             bitmap = null;
         }
 
-        if (imageViewReference != null) {
-            ImageView imageView = imageViewReference.get();
-            if (imageView != null) {
+        if (webViewReference != null) {
+            WebView webView = webViewReference.get();
+            if (webView != null) {
                 if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
+                    webView.setImageBitmap(bitmap);
                 } else {
-                    Drawable placeholder = imageView.getContext().getResources().getDrawable(R.drawable.mac);
-                    imageView.setImageDrawable(placeholder);
+                    Drawable placeholder = webView.getContext().getResources().getDrawable(R.drawable.mac);
+                    webView.setImageDrawable(placeholder);
                 }
             }
         }
@@ -72,4 +75,5 @@ class ImageDownloaderTask extends AsyncTask<String, Void, Bitmap> {
         }
         return null;
     }
+    */
 }

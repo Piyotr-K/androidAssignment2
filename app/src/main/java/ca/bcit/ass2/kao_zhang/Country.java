@@ -15,7 +15,7 @@ public class Country {
 
     private int population;
 
-    private int area;
+    private Double area;
 
     private List<String> borders;
 
@@ -59,11 +59,11 @@ public class Country {
         return this.population;
     }
 
-    public void setArea(int area) {
+    public void setArea(Double area) {
         this.area = area;
     }
 
-    public int getArea() {
+    public Double getArea() {
         return this.area;
     }
 
