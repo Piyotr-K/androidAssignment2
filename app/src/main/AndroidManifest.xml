@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".CountryActivity" />
-        <activity android:name=".CountryDetailActivity"></activity>
+        <activity android:name=".CountryDetailActivity" />
+        <activity android:name=".InfoRequestActivity" android:label="@string/info_request">
+        </activity>
     </application>
 
 </manifest>

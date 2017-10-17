@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ca.bcit.ass2.kao_zhang.InfoRequestActivity">
+
+    <include layout="@layout/toolbar_main" android:id="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/manufacturer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextStyle"/>
+    <TextView
+        android:id="@+id/model"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextStyle"/>
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextStyle"/>
+    <TextView
+        android:id="@+id/version_release"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextStyle"/>
+    <TextView
+        android:id="@+id/serial_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextStyle"/>
+
+</LinearLayout>

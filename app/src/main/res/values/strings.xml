@@ -7,4 +7,6 @@
         <item>Europe</item>
         <item>Oceania</item>
     </string-array>
+    <string name="info_request">Request for information</string>
+    <string name="action_share">Share</string>
 </resources>
